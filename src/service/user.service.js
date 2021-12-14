@@ -45,19 +45,15 @@ const deleteUserById = async(id) => {
     }
     const deletedUser = await usersRepository.deleteById(id);
     if(!deletedUser) throw new Error(`User with ID:${  id  } not found!`);
-    let posts = [];
     postsRepository.deleteByUserId(id).then(value => {
-        posts = value;
+        deletedUser.posts = value
     });
-    (deletedUser).posts = posts;
-    let comments = [];
     commentsRepository.deleteByUserId(id).then(value => {
-        comments = value;
+        deletedUser.comments = value
     });
-    posts.forEach(post => {
+    deletedUser.posts.forEach(post => {
         commentsRepository.deleteByPostId(post.id);
     });
-    (deletedUser).comments = comments;
     return deletedUser;
 }
 const getUserPosts = async(id) => {

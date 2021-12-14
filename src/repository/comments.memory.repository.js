@@ -20,22 +20,22 @@ const save = async (comment) => {
   comments.push(newComment);
   return newComment;
 } 
-const updateById = async(id, updateableComment) => {
+const updateById = async(id, updatableComment) => {
   const index = comments.findIndex(comment => comment.id === id);
   const oldComment = comments.find(comment => comment.id === id);
-  if(updateableComment.name !== undefined) oldComment.text = updateableComment.text;
+  if(updatableComment.name !== undefined) oldComment.text = updatableComment.text;
   comments.splice(index, 1, oldComment);
 }
 const getByUserId = async(id) => {
-  const userComments = comments.find(comment => comment.user.id === id);
+  const userComments = comments.filter(comment => comment.user.id === id);
   return userComments;
 }
 const getByPostId = async(id) => {
-  const postComments = comments.find(comment => comment.post.id === id);
+  const postComments = comments.filter(comment => comment.post.id === id);
   return postComments;
 }
 const deleteByPostId = async(id) => {
-  const postComments = comments.find(comment => comment.post.id === id);
+  const postComments = comments.filter(comment => comment.post.id === id);
   if(postComments) {
     const deletedPostComments = new Array(postComments);
     deletedPostComments.forEach(element => {
@@ -46,7 +46,7 @@ const deleteByPostId = async(id) => {
   return postComments;
 }
 const deleteByUserId = async(id) => {
-  const userComments = comments.find(comment => comment.user.id === id);
+  const userComments = comments.filter(comment => comment.user.id === id);
   if(userComments) {
     const deletedComments = new Array(userComments);
     deletedComments.forEach(element => {

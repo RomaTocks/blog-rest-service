@@ -28,7 +28,7 @@ const save = async (newPost) => {
 }
 const getPostById = async(id) => posts.find(post => post.id === id)
 
-const getPostsByUserId = async(id) => posts.find(post => post.user.id === id)
+const getPostsByUserId = async(id) => posts.filter(post => post.user.id === id)
 
 const updatePostById = async(id, updatedPost) => {
   const index = posts.findIndex(post => post.id === id);
@@ -45,7 +45,7 @@ const deleteById = async(id) => {
   return deletedPost;
 }
 const deleteByUserId = async(id) => {
-  const userPosts = posts.find(post => post.user.id === id);
+  const userPosts = posts.filter(post => post.user.id === id);
   if(userPosts) {
     const deletedPosts = new Array(userPosts);
     deletedPosts.map(element => {

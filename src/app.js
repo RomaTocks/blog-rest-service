@@ -1,5 +1,7 @@
 const express = require('express');
-const userRouter = require('./resources/users/user.router');
+const userRouter = require('./router/user.router')
+const postRouter = require('./router/posts.router')
+const commentRouter = require('./router/comments.router');
 
 const app = express();
 
@@ -14,5 +16,7 @@ app.use('/', (req, res, next) => {
 });
 
 app.use('/users', userRouter);
+app.use('/posts', postRouter);
+app.use('/comments', commentRouter);
 
 module.exports = app;

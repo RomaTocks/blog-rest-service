@@ -11,7 +11,7 @@ const posts = [
   }
   ,
   {
-    id :'226b0228-2ba6-4ec4-80bf-f07f88920a7d',
+    id :'226b0228-2bab-4ec4-80bf-f07f88920a7d',
     title : 'Delete me!',
     text : 'please!',
     user : {
@@ -45,12 +45,15 @@ const deleteById = async(id) => {
   return deletedPost;
 }
 const deleteByUserId = async(id) => {
-  const userPosts = new Array(posts.find(post => post.user.id === id)); 
-  userPosts.map(element => {
-    const index = posts.findIndex(post => post.id === element.id);
-    posts.splice(index, 1);
-    return element;
-  });
+  const userPosts = posts.find(post => post.user.id === id);
+  if(userPosts) {
+    const deletedPosts = new Array(userPosts);
+    deletedPosts.map(element => {
+      const index = posts.findIndex(post => post.id === element.id);
+      posts.splice(index, 1);
+      return element;
+    });
+  }
   return userPosts;
 }
 module.exports = { getAll, save, getPostsByUserId, updatePostById, deleteById, getPostById, deleteByUserId };

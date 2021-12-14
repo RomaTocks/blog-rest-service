@@ -35,18 +35,25 @@ const getByPostId = async(id) => {
   return postComments;
 }
 const deleteByPostId = async(id) => {
-  const postComments = new Array(comments.find(comment => comment.post.id === id));
-  postComments.forEach(element => {
-    const index = comments.findIndex(comment => comment.id === element.id);
-    comments.splice(index, 1);
-  });
+  const postComments = comments.find(comment => comment.post.id === id);
+  if(postComments) {
+    const deletedPostComments = new Array(postComments);
+    deletedPostComments.forEach(element => {
+      const index = comments.findIndex(comment => comment.id === element.id);
+      comments.splice(index, 1);
+    });
+  }
+  return postComments;
 }
 const deleteByUserId = async(id) => {
-  const userComments = new Array(comments.find(comment => comment.user.id === id));
-  userComments.forEach(element => {
-    const index = comments.findIndex(comment => comment.id === element.id);
-    comments.splice(index, 1);
-  });
+  const userComments = comments.find(comment => comment.user.id === id);
+  if(userComments) {
+    const deletedComments = new Array(userComments);
+    deletedComments.forEach(element => {
+      const index = comments.findIndex(comment => comment.id === element.id);
+      comments.splice(index, 1);
+    });
+  }
   return userComments;
 }
 const deleteById = async(id) => {

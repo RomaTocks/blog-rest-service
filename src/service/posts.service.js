@@ -55,11 +55,9 @@ const deletePostById = async(id) => {
     }
     const deletedPost = await postRepository.deleteById(id);
     if(!deletedPost) throw new Error(`Post with ID:${  id  } not found!`);
-    let comments = [];
     commentRepository.deleteByPostId(id).then(value => {
-        comments = value;
+        deletedPost.comments = value;
     });
-    deletedPost.comments = comments;
     return deletedPost;
 }
 

@@ -11,8 +11,8 @@ class Comment {
     this.post = post;
   }
 
-  static toResponse(user) {
-    const { id, text, createdAt, user, post } = user;
+  static toResponse(comment) {
+    const { id, text, createdAt, user, post } = comment;
     return { id, text, createdAt, user, post };
   }
 }

@@ -1,9 +1,9 @@
-const uuid = require('uuid');
+const {v4:uuid} = require('uuid');
 const Post = require('./posts.model');
 const User = require('./user.model');
 
 class Comment {
-  constructor({ id = uuid(), text = '', createdAt = new Date().now(), user = new User(), post = new Post() } = {}) {
+  constructor({ id = uuid(), text = '', createdAt = new Date(), user = new User(), post = new Post() } = {}) {
     this.id = id;
     this.text = text;
     this.createdAt = createdAt;

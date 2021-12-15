@@ -1,5 +1,7 @@
-const router = require('express').Router();
-const controller = require('../controller/comment.controller')
+import { Router } from 'express';
+import controller from '../controller/comment.controller';
+
+const router = Router();
 
 router.route('/')
   .get(controller.getAll)
@@ -14,4 +16,4 @@ router.route('/:id/user')
   .get(controller.getUserByCommentId)
 
 
-module.exports = router;
+export default router;

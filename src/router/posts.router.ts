@@ -1,5 +1,7 @@
-const router = require('express').Router();
-const controller = require('../controller/post.controller')
+import { Router } from 'express';
+import controller from '../controller/post.controller';
+
+const router = Router();
 
 router.route('/')
   .get(controller.getAll)
@@ -11,4 +13,4 @@ router.route('/:id')
 router.route('/:id/comments')
   .get(controller.getPostCommentsById)
 
-module.exports = router;
+export default router;

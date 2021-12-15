@@ -1,18 +1,20 @@
-const postRepository = require('../repository/posts.memory.repository')
-const commentRepository = require('../repository/comments.memory.repository')
-const usersRepository = require('../repository/user.memory.repository');
-const User = require("../model/user.model");
+import postRepository from '../repository/posts.memory.repository';
+import commentRepository from '../repository/comments.memory.repository';
+import usersRepository from '../repository/user.memory.repository';
+import User from '../model/user.model';
+import Comment from '../model/comments.model';
+import Post from '../model/posts.model';
 
 const getAll = async () => commentRepository.getAll()
 
-const getCommentById = async (id) => {
+const getCommentById = async (id : string) => {
   if(id.length !== 36) {
     throw new Error('Bad ID format.')
   }
   return commentRepository.getById(id);
 }
 
-const getPostByCommentId = async (id) => {
+const getPostByCommentId = async (id : string) => {
   if(id.length !== 36) {
     throw new Error('Bad ID format.')
   }
@@ -25,7 +27,7 @@ const getPostByCommentId = async (id) => {
   })
   return post;
 }
-const getUserByCommentId = async (id) => {
+const getUserByCommentId = async (id : string) => {
   if(id.length !== 36) {
     throw new Error('Bad ID format.')
   }
@@ -41,12 +43,12 @@ const getUserByCommentId = async (id) => {
   });
   return User.toResponse(user);
 }
-const saveComment = async (newComment) => {
+const saveComment = async (newComment: {text : string, post: Post, user: User}) => {
   if(!newComment.text || !newComment.post.id || !newComment.user.id) throw new Error('Bad credentials!');
   const savedComment = await commentRepository.save(newComment);
   return savedComment;
 }
-const updateCommentById = async (id, updatableComment) => {
+const updateCommentById = async (id:string, updatableComment: Comment) => {
   if(id.length !== 36) {
     throw new Error('Bad ID format.')
   }
@@ -54,11 +56,11 @@ const updateCommentById = async (id, updatableComment) => {
   if(!updatedComment) throw new Error(`Comment with ID:${  id  } not found!`)
   return updatedComment;
 }
-const deleteByCommentId = async (id) => {
+const deleteByCommentId = async (id:string) => {
   if(id.length !== 36) {
     throw new Error('Bad ID format.')
   }
-  const deletedComment = await commentRepository.deleteById()
+  const deletedComment = await commentRepository.deleteById(id)
   if(!deletedComment) throw new Error(`Comment with ID:${  id  } not found!`);
   return deletedComment;
 }

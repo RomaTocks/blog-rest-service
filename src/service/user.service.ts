@@ -1,37 +1,40 @@
-const usersRepository = require('../repository/user.memory.repository');
-const postsRepository = require('../repository/posts.memory.repository');
-const commentsRepository = require('../repository/comments.memory.repository');
+import Post from '../model/posts.model';
+import User from '../model/user.model';
+import Comment from '../model/comments.model';
+
+import usersRepository from '../repository/user.memory.repository';
+import postsRepository from '../repository/posts.memory.repository';
+import commentsRepository from '../repository/comments.memory.repository';
 
 const getAll = async() => {
     const users = await usersRepository.getAll();
-    users.forEach(user => {
+    users.forEach((user : User) => {
         const modifiedUser = user;
-        postsRepository.getPostsByUserId(user.id).then(value => {
+        postsRepository.getPostsByUserId(user.id).then((value: Post[]) => {
             modifiedUser.posts = value;
         });
-        commentsRepository.getByUserId(user.id).then(value => {
+        commentsRepository.getByUserId(user.id).then((value : Comment[]) => {
             modifiedUser.comments = value;
         })
     })
     return users;
 }
-const getUserById = async(id) => {
+const getUserById = async(id : string) => {
     const user = await usersRepository.getById(id);
     if(!user) throw new Error(`User with ID:${  id  } not found!`)
-    postsRepository.getPostsByUserId(user.id).then(value => {
+    postsRepository.getPostsByUserId(user.id).then((value: Post[]) => {
         user.posts = value;
     });
-    commentsRepository.getByUserId(user.id).then(value => {
+    commentsRepository.getByUserId(user.id).then((value : Comment[]) => {
         user.comments = value;
     })
     return user;
 }
-const saveUser = async(user) => {
+const saveUser = async(user : User) => {
     if(!user.login || !user.password || !user.name) throw new Error("Bad credentials!")
-    const newUser = await usersRepository.save(user);
-    return newUser;
+    return usersRepository.save({ login: user.login, name: user.name, password: user.password });
 }
-const updateUserById = async(id, user) => {
+const updateUserById = async(id : string, user: User) => {
     if(id.length !== 36) {
         throw new Error('Bad ID format.')
     }
@@ -39,34 +42,34 @@ const updateUserById = async(id, user) => {
     if(!updatedUser) throw new Error(`User with ID:${  id  } not found!`);
     return updatedUser;
 }
-const deleteUserById = async(id) => {
+const deleteUserById = async(id : string) => {
     if(id.length !== 36) {
         throw new Error('Bad ID format.')
     }
     const deletedUser = await usersRepository.deleteById(id);
     if(!deletedUser) throw new Error(`User with ID:${  id  } not found!`);
-    postsRepository.deleteByUserId(id).then(value => {
+    postsRepository.deleteByUserId(id).then((value : Post[]) => {
         deletedUser.posts = value
     });
-    commentsRepository.deleteByUserId(id).then(value => {
+    commentsRepository.deleteByUserId(id).then((value : Comment[]) => {
         deletedUser.comments = value
     });
-    deletedUser.posts.forEach(post => {
+    if(deletedUser.posts) deletedUser.posts.forEach((post : Post) => {
         commentsRepository.deleteByPostId(post.id);
     });
     return deletedUser;
 }
-const getUserPosts = async(id) => {
+const getUserPosts = async(id : string) => {
     if(id.length !== 36) {
         throw new Error('Bad ID format.')
     }
     return postsRepository.getPostsByUserId(id);
 }
-const getUserComments = async(id) => {
+const getUserComments = async(id : string) => {
     if(id.length !== 36) {
         throw new Error('Bad ID format.')
     }
     return commentsRepository.getByUserId(id)
 }
 
-module.exports = { getAll, getUserComments, getUserPosts, saveUser, updateUserById, deleteUserById, getUserById };
+export default { getAll, getUserComments, getUserPosts, saveUser, updateUserById, deleteUserById, getUserById };

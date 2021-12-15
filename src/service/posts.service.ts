@@ -1,27 +1,30 @@
-const postRepository = require('../repository/posts.memory.repository')
-const commentRepository = require('../repository/comments.memory.repository')
-const usersRepository = require('../repository/user.memory.repository');
-const User = require("../model/user.model");
+import Post from '../model/posts.model';
+import User from '../model/user.model';
+import Comment from '../model/comments.model';
+
+import postRepository from '../repository/posts.memory.repository';
+import commentRepository from '../repository/comments.memory.repository';
+import usersRepository from '../repository/user.memory.repository';
 
 const getAll = async() => {
     const posts = await postRepository.getAll();
-    return posts.map(post => {
+    return posts.map((post ) => {
         const mappedPost = post;
-        commentRepository.getByPostId(post.id).then(value => {
+        commentRepository.getByPostId(post.id).then((value : Comment[]) => {
             mappedPost.comments = value;
         });
         return mappedPost;
     })
 }
-const getPostById = async (id) => {
+const getPostById = async (id : string) => {
     const post = await postRepository.getPostById(id);
     if(!post) throw new Error(`Post with ID:${  id  } not found!`)
-    commentRepository.getByPostId(post.id).then(value => {
+    commentRepository.getByPostId(post.id).then((value : Comment[]) => {
         post.comments = value;
     })
     return post;
 }
-const getPostCommentsById = async (id) => {
+const getPostCommentsById = async (id : string) => {
     if(id.length !== 36) {
         throw new Error('Bad ID format.')
     }
@@ -29,19 +32,20 @@ const getPostCommentsById = async (id) => {
     if(!postComments) throw new Error(`Post comments with post ID:${  id  } not found!`)
     return postComments;
 }
-const getUserByPostId = async (id) => {
+const getUserByPostId = async (id : string) => {
     if(id.length !== 36) {
         throw new Error('Bad ID format.')
     }
     const userPost = await postRepository.getPostById(id);
+    if(!userPost) throw new Error(`Post with post ID:${  id  } not found!`)
     const user = await usersRepository.getById(userPost.user.id);
-    return User.toResponse(user);
+    return user ? User.toResponse(user) : null;
 }
-const savePost = async (post) => {
+const savePost = async (post : { title:string,text:string,user:User }) => {
     if(!post.text || !post.user.id || !post.title) throw new Error("Bad credentials!")
     return postRepository.save(post);
 }
-const updatePostById = async(id,post) => {
+const updatePostById = async(id : string,post : Post) => {
     if(id.length !== 36) {
         throw new Error('Bad ID format.')
     }
@@ -49,16 +53,16 @@ const updatePostById = async(id,post) => {
     if(!updatedPost) throw new Error(`Post with ID:${  id  } not found!`)
     return updatedPost;
 }
-const deletePostById = async(id) => {
+const deletePostById = async(id : string) => {
     if(id.length !== 36) {
         throw new Error('Bad ID format.')
     }
     const deletedPost = await postRepository.deleteById(id);
     if(!deletedPost) throw new Error(`Post with ID:${  id  } not found!`);
-    commentRepository.deleteByPostId(id).then(value => {
+    commentRepository.deleteByPostId(id).then((value : Comment[]) => {
         deletedPost.comments = value;
     });
     return deletedPost;
 }
 
-module.exports = { getAll, getPostById, savePost, updatePostById, deletePostById, getPostCommentsById, getUserByPostId };
+export default { getAll, getPostById, savePost, updatePostById, deletePostById, getPostCommentsById, getUserByPostId };

@@ -6,9 +6,9 @@ import User from './user.model';
 export default class Comment {
   public id: string;
 
-  public text: string;
+  public text?: string;
 
-  public createdAt: Date;
+  public createdAt?: Date;
 
   public user: User;
 

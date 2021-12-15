@@ -5,16 +5,16 @@ import Comment from './comments.model';
 export default class Post {
   public id: string;
 
-  public title: string;
+  public title?: string;
 
-  public text: string;
+  public text?: string;
 
-  public comments: Comment[];
+  public comments?: Comment[];
 
   public user: User;
 
-  public createdAt: Date;
-  
+  public createdAt?: Date;
+
   constructor({
                 id = uuid(),
                 title = 'Post',
@@ -31,7 +31,7 @@ export default class Post {
     this.comments = comments;
   }
 
-  static toResponse(post: { id: string; title: string; text: string; createdAt: any; user: User; comments: Comment[]; }) {
+  static toResponse(post: { id: string; title: string; text: string; createdAt: Date; user: User; comments: Comment[]; }) {
     const { id, title, text, createdAt, user, comments } = post;
     return { id, title, text, createdAt, user, comments };
   }

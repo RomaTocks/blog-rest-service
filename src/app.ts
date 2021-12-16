@@ -1,7 +1,8 @@
 import express, { NextFunction, Request, Response } from 'express';
 import userRouter from './router/user.router';
 import postRouter from './router/posts.router';
-import  commentRouter from './router/comments.router';
+import commentRouter from './router/comments.router';
+import notFoundRouter from './router/not-found.router'
 import { loggerMiddleware } from './middlewares';
 
 const app = express();
@@ -20,5 +21,6 @@ app.use(loggerMiddleware);
 app.use('/users', userRouter);
 app.use('/posts', postRouter);
 app.use('/comments', commentRouter);
+app.use(notFoundRouter)
 
 export default app

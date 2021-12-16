@@ -1,13 +1,15 @@
 import { Request, Response } from 'express';
 import service from '../service/user.service';
 import User from '../model/user.model';
+import { errorLogger } from '../middlewares/logger';
 
 const saveUser = async (req : Request, res : Response) => {
     try {
         const newUser  = await service.saveUser(req.body);
         res.status(200).json(newUser);
-    }catch({ message }) {
+    }catch({ message, status }) {
         res.status(400).json({error : message});
+        await errorLogger(req, { status:res.statusCode, message },)
     }
 }
 const getAll = async (_req : Request, res : Response) => {
@@ -23,6 +25,7 @@ const getById = async (req : Request, res : Response) => {
     }
     catch({ message }) {
         res.status(400).json({error : message})
+        await errorLogger(req, { status:res.statusCode, message },)
     }
 }
 const updateById = async (req : Request, res : Response) => {
@@ -32,8 +35,9 @@ const updateById = async (req : Request, res : Response) => {
             res.json(user ? User.toResponse(user) : null)
         }
     }
-    catch(error : any) {
-        res.status(400).json({error : error.message})
+    catch({ message }) {
+        res.status(400).json({error : message})
+        await errorLogger(req, { status:res.statusCode, message },)
     }
 }
 const deleteById = async (req : Request, res : Response) => {
@@ -45,6 +49,7 @@ const deleteById = async (req : Request, res : Response) => {
     }
     catch({ message }) {
         res.status(400).json({error : message})
+        await errorLogger(req, { status:res.statusCode, message },)
     }
 }
 const getPostsById = async (req : Request, res : Response) => {
@@ -56,6 +61,7 @@ const getPostsById = async (req : Request, res : Response) => {
     }
     catch ({ message }) {
         res.status(400).json({error : message});
+        await errorLogger(req, { status:res.statusCode, message },)
     }
 }
 const getCommentsById = async (req : Request, res : Response) => {
@@ -67,6 +73,7 @@ const getCommentsById = async (req : Request, res : Response) => {
     }
     catch ({ message }) {
         res.status(400).json({error : message});
+        await errorLogger(req, { status:res.statusCode, message },)
     }
 }
 export default {saveUser, getCommentsById, getPostsById, getAll, deleteById, getById, updateById}

@@ -25,14 +25,6 @@ export default class User {
     this.posts = posts;
     this.comments = comments;
   }
-  // constructor({ id=uuid(),name = 'USER', login = 'user', password = 'P@55w0rd', posts = [], comments = [] } = {}) {
-  //   this.id = id;
-  //   this.name = name;
-  //   this.login = login;
-  //   this.password = password;
-  //   this.posts = posts;
-  //   this.comments = comments;
-  // }
 
 
 

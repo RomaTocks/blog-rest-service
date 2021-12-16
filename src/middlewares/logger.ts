@@ -27,7 +27,7 @@ export const loggerMiddleware = async (req: Request, _res: Response, next: NextF
     logger.log('info', info);
     next();
 };
-export const errorLogger = async (req : Request, error : { status : number, message : unknown }) => {
+export const errorLogger = (req : Request, error : { status : number, message : unknown }) => {
     const info = requestInfo(req);
     const errorMessage = `Error
     status:     ${error.status}

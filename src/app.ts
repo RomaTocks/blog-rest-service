@@ -2,6 +2,7 @@ import express, { NextFunction, Request, Response } from 'express';
 import userRouter from './router/user.router';
 import postRouter from './router/posts.router';
 import  commentRouter from './router/comments.router';
+import { loggerMiddleware } from './middlewares';
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use('/', (req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
+app.use(loggerMiddleware);
 app.use('/users', userRouter);
 app.use('/posts', postRouter);
 app.use('/comments', commentRouter);

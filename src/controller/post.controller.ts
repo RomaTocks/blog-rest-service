@@ -1,25 +1,24 @@
 import { Request, Response } from 'express';
 
 import service from '../service/posts.service';
-import { errorLogger } from '../middlewares/logger';
+import { handleError } from '../error/errors.service';
 
 const savePost = async (req : Request, res : Response) => {
   try {
     const newPost = await  service.savePost(req.body);
     res.status(200).json(newPost);
   }
-  catch ({ message }) {
-    res.status(400).json({error : message});
-    await errorLogger(req, { status:res.statusCode, message },)
+  catch (error) {
+    handleError(error,req,res);
   }
 }
-const getAll = async (_req : Request, res : Response) => {
+const getAll = async (req : Request, res : Response) => {
   try {
     const posts = await service.getAll();
     res.status(200).json(posts);
   }
-  catch ({ message }) {
-    res.status(400).json({error : message});
+  catch (error) {
+    handleError(error,req,res);
   }
 }
 const getById = async (req : Request, res : Response) => {
@@ -29,9 +28,8 @@ const getById = async (req : Request, res : Response) => {
       res.status(200).json(post);
     }
   }
-  catch ({ message }) {
-    res.status(400).json({error : message});
-    await errorLogger(req, { status:res.statusCode, message },)
+  catch (error) {
+    handleError(error,req,res);
   }
 }
 const getPostCommentsById = async (req : Request, res : Response) => {
@@ -41,9 +39,8 @@ const getPostCommentsById = async (req : Request, res : Response) => {
       res.status(200).json(comments);
     }
   }
-  catch ({ message }) {
-    res.status(400).json({error : message});
-    await errorLogger(req, { status:res.statusCode, message },)
+  catch (error) {
+    handleError(error,req,res);
   }
 }
 const getUserByPostId = async (req : Request, res : Response) => {
@@ -53,9 +50,8 @@ const getUserByPostId = async (req : Request, res : Response) => {
       res.status(200).json(user);
     }
   }
-  catch ({ message }) {
-    res.status(400).json({error : message});
-    await errorLogger(req, { status:res.statusCode, message },)
+  catch (error) {
+    handleError(error,req,res);
   }
 }
 const updatePostById = async (req : Request, res : Response) => {
@@ -65,9 +61,8 @@ const updatePostById = async (req : Request, res : Response) => {
       res.status(200).json(updatedPost);
     }
   }
-  catch ({ message }) {
-    res.status(400).json({error : message});
-    await errorLogger(req, { status:res.statusCode, message },)
+  catch (error) {
+    handleError(error,req,res);
   }
 }
 const deleteById = async (req : Request, res : Response) => {
@@ -77,9 +72,8 @@ const deleteById = async (req : Request, res : Response) => {
       res.status(200).json(deletedPost);
     }
   }
-  catch ({ message }) {
-    res.status(400).json({error : message});
-    await errorLogger(req, { status:res.statusCode, message },)
+  catch (error) {
+    handleError(error,req,res);
   }
 }
 export default {deleteById,getById, getAll, getPostCommentsById, updatePostById, savePost, getUserByPostId, }

@@ -1,15 +1,14 @@
 import { Request, Response } from 'express';
 import service from '../service/user.service';
 import User from '../model/user.model';
-import { errorLogger } from '../middlewares/logger';
+import { handleError } from '../error/errors.service';
 
 const saveUser = async (req : Request, res : Response) => {
     try {
         const newUser  = await service.saveUser(req.body);
         res.status(200).json(newUser);
-    }catch({ message, status }) {
-        res.status(400).json({error : message});
-        await errorLogger(req, { status:res.statusCode, message },)
+    }catch(error) {
+        handleError(error,req,res);
     }
 }
 const getAll = async (_req : Request, res : Response) => {
@@ -23,9 +22,8 @@ const getById = async (req : Request, res : Response) => {
             res.json(User.toResponse(user))
         }
     }
-    catch({ message }) {
-        res.status(400).json({error : message})
-        await errorLogger(req, { status:res.statusCode, message },)
+    catch(error) {
+        handleError(error,req,res);
     }
 }
 const updateById = async (req : Request, res : Response) => {
@@ -35,9 +33,8 @@ const updateById = async (req : Request, res : Response) => {
             res.json(user ? User.toResponse(user) : null)
         }
     }
-    catch({ message }) {
-        res.status(400).json({error : message})
-        await errorLogger(req, { status:res.statusCode, message },)
+    catch(error) {
+        handleError(error,req,res);
     }
 }
 const deleteById = async (req : Request, res : Response) => {
@@ -47,9 +44,8 @@ const deleteById = async (req : Request, res : Response) => {
             res.json(User.toResponse(user))
         }
     }
-    catch({ message }) {
-        res.status(400).json({error : message})
-        await errorLogger(req, { status:res.statusCode, message },)
+    catch(error) {
+        handleError(error,req,res);
     }
 }
 const getPostsById = async (req : Request, res : Response) => {
@@ -59,9 +55,8 @@ const getPostsById = async (req : Request, res : Response) => {
             res.status(200).json(posts);
         }
     }
-    catch ({ message }) {
-        res.status(400).json({error : message});
-        await errorLogger(req, { status:res.statusCode, message },)
+    catch (error) {
+        handleError(error,req,res);
     }
 }
 const getCommentsById = async (req : Request, res : Response) => {
@@ -71,9 +66,8 @@ const getCommentsById = async (req : Request, res : Response) => {
             res.status(200).json(comments);
         }
     }
-    catch ({ message }) {
-        res.status(400).json({error : message});
-        await errorLogger(req, { status:res.statusCode, message },)
+    catch (error) {
+        handleError(error,req,res);
     }
 }
 export default {saveUser, getCommentsById, getPostsById, getAll, deleteById, getById, updateById}

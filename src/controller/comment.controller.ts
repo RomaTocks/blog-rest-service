@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { errorLogger } from '../middlewares/logger';
 
 const service = require('../service/comments.service');
 
@@ -9,15 +10,17 @@ const saveComment = async (req : Request, res : Response) => {
   }
   catch ({ message }) {
     res.status(400).json({error : message});
+    await errorLogger(req, { status:res.statusCode, message },)
   }
 }
-const getAll = async (_req : Request, res : Response) => {
+const getAll = async (req : Request, res : Response) => {
   try {
     const comments = await service.getAll();
     res.status(200).json(comments);
   }
   catch ({ message }) {
     res.status(400).json({error : message});
+    await errorLogger(req, { status:res.statusCode, message },)
   }
 }
 const getById = async (req : Request, res : Response) => {
@@ -29,6 +32,7 @@ const getById = async (req : Request, res : Response) => {
   }
   catch ({ message }) {
     res.status(400).json({error : message});
+    await errorLogger(req, { status:res.statusCode, message },)
   }
 }
 const getUserByCommentId = async (req : Request, res : Response) => {
@@ -40,6 +44,7 @@ const getUserByCommentId = async (req : Request, res : Response) => {
   }
   catch ({ message }) {
     res.status(400).json({error : message});
+    await errorLogger(req, { status:res.statusCode, message },)
   }
 }
 const getPostByCommentId = async (req : Request, res : Response) => {
@@ -51,6 +56,7 @@ const getPostByCommentId = async (req : Request, res : Response) => {
   }
   catch ({ message }) {
     res.status(400).json({error : message});
+    await errorLogger(req, { status:res.statusCode, message },)
   }
 }
 const updateById = async (req : Request, res : Response) => {
@@ -62,6 +68,7 @@ const updateById = async (req : Request, res : Response) => {
   }
   catch ({ message }) {
     res.status(400).json({error : message});
+    await errorLogger(req, { status:res.statusCode, message },)
   }
 }
 const deleteById = async (req : Request, res : Response) => {
@@ -73,6 +80,7 @@ const deleteById = async (req : Request, res : Response) => {
   }
   catch ({ message }) {
     res.status(400).json({error : message});
+    await errorLogger(req, { status:res.statusCode, message },)
   }
 }
 export default {getAll, getById, deleteById, updateById, getPostByCommentId, saveComment, getUserByCommentId}

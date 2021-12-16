@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 
 import service from '../service/posts.service';
+import { errorLogger } from '../middlewares/logger';
 
 const savePost = async (req : Request, res : Response) => {
   try {
@@ -9,6 +10,7 @@ const savePost = async (req : Request, res : Response) => {
   }
   catch ({ message }) {
     res.status(400).json({error : message});
+    await errorLogger(req, { status:res.statusCode, message },)
   }
 }
 const getAll = async (_req : Request, res : Response) => {
@@ -29,6 +31,7 @@ const getById = async (req : Request, res : Response) => {
   }
   catch ({ message }) {
     res.status(400).json({error : message});
+    await errorLogger(req, { status:res.statusCode, message },)
   }
 }
 const getPostCommentsById = async (req : Request, res : Response) => {
@@ -40,6 +43,7 @@ const getPostCommentsById = async (req : Request, res : Response) => {
   }
   catch ({ message }) {
     res.status(400).json({error : message});
+    await errorLogger(req, { status:res.statusCode, message },)
   }
 }
 const getUserByPostId = async (req : Request, res : Response) => {
@@ -51,6 +55,7 @@ const getUserByPostId = async (req : Request, res : Response) => {
   }
   catch ({ message }) {
     res.status(400).json({error : message});
+    await errorLogger(req, { status:res.statusCode, message },)
   }
 }
 const updatePostById = async (req : Request, res : Response) => {
@@ -62,6 +67,7 @@ const updatePostById = async (req : Request, res : Response) => {
   }
   catch ({ message }) {
     res.status(400).json({error : message});
+    await errorLogger(req, { status:res.statusCode, message },)
   }
 }
 const deleteById = async (req : Request, res : Response) => {
@@ -73,6 +79,7 @@ const deleteById = async (req : Request, res : Response) => {
   }
   catch ({ message }) {
     res.status(400).json({error : message});
+    await errorLogger(req, { status:res.statusCode, message },)
   }
 }
 export default {deleteById,getById, getAll, getPostCommentsById, updatePostById, savePost, getUserByPostId, }

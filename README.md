@@ -23,7 +23,20 @@ npm install
 ```
 npm start
 ```
+##Docker
+Run in terminal:
 
+```
+ docker-compose up
+```
+If you want to stop, press the keyboard shortcut first **Ctrl+C**, then enter in the terminal:
+```
+ docker-compose down
+```
+Rebuild images & start containers:
+```
+ docker compose up --build 
+```
 ## Development
 
 If you're using VSCode, you can get a better developer experience from integration with
